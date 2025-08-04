@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        vector<int> palindrome;
+        while (head) {
+            palindrome.push_back(head->val);
+            head = head->next;
+        }
+        
+        int left = 0, right = palindrome.size() - 1;
+        while (left < right &&  palindrome[left] ==  palindrome[right]) {
+            left++;
+            right--;
+        }
+        return left >= right;
+    }
+};
