@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        vector<int> list;
+        inOrder(root, list);
+        return list[k - 1];
+    }
+
+    void inOrder(TreeNode* root, vector<int>& ans) {
+        if (root == NULL) return;
+        inOrder(root->left, ans);
+        ans.push_back(root->val);
+        inOrder(root->right, ans);
+    }
+};
