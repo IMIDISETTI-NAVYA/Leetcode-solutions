@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minSetSize(vector<int>& arr) {
+        
+        int n=arr.size();
+        int half=n/2;
+        map<int,int> mpp;
+        for(int i=0;i<arr.size();i++){
+            mpp[arr[i]]++;
+        }
+
+        priority_queue<int> max_h;
+        for(auto it:mpp){
+            max_h.push(it.second);
+        }
+
+        int ans=0;
+        int value=0;
+        while(!max_h.empty()){
+            int top=max_h.top();
+            max_h.pop();
+            value+=top;
+            ans+=1;
+            if(value>=half){
+                break;
+            }
+            
+        }
+        return ans;
+
+    }
+};
