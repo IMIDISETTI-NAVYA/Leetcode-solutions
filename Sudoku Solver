@@ -1,0 +1,84 @@
+class Solution {
+public:
+vector<vector<bool>> rows;
+vector<vector<bool>> cols;
+vector<vector<bool>> boxes;
+bool solved = false;
+
+    bool isValid(vector<vector<char>>& b, int row, int col, int d)
+    {
+        int box = (row/3)*3 + col/3;
+
+        if(rows[row][d] || cols[col][d] || boxes[box][d])
+            return false;
+        return true;
+    }
+
+    void backtrack(vector<vector<char>>& b, int row, int col)
+    {
+        if(solved) return;
+
+        if(row == 9)
+        {
+            solved  = true;
+            return;
+        }
+        if(b[row][col] == '.')
+        {
+            for(int d = 1; d<=9; d++)
+            {
+                if(isValid(b, row, col, d))
+                {
+                    int box = (row/3)*3 + col/3;
+
+                    b[row][col] = (char)(d + '0');
+                    rows[row][d] = true;
+                    cols[col][d] = true;
+                    boxes[box][d] = true;
+
+                    if(col < 8)
+                        backtrack(b, row, col+1);
+                    else
+                        backtrack(b, row+1, 0);
+                    if(!solved)
+                    {
+                        b[row][col] = '.';
+                        rows[row][d] = false;
+                        cols[col][d] = false;
+                        boxes[box][d] = false;
+                    }
+                }
+            }
+        }
+        else
+        {
+            if(col < 8)
+                backtrack(b, row, col+1);
+            else
+                backtrack(b, row+1, 0);
+        }
+    }
+
+
+
+    void solveSudoku(vector<vector<char>>& b) {
+        rows.resize(9, vector<bool>(9+1, 0));
+        cols.resize(9, vector<bool>(9+1, 0));
+        boxes.resize(9, vector<bool>(9+1, 0));
+
+        for(int i = 0; i<9; i++)
+            for(int j = 0; j<9; j++)
+            {
+                if(b[i][j] != '.')
+                {
+                    int box = (i/3)*3 + j/3;
+                    int d = b[i][j] - '0';
+                    rows[i][d] = true, cols[j][d] = true, boxes[box][d] = true;;
+                }
+            }
+        
+        backtrack(b, 0, 0);
+        return;
+
+    }
+};
